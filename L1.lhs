@@ -28,7 +28,7 @@ http://www.cis.upenn.edu/~cis194/lectures/09-functors.html
 Kinds will become important for us when we discuss monad transformers 
 (a pre-req to programming with the Snap monad... or any web framework monad really).
 
-This means we can constrain our functions to only types that implement a certain typeclass. 
+Using typeclasses we can constrain our functions to only types that implement a certain typeclass. 
 Example: 
 
 > sayHey :: ToString a => a -> String
