@@ -2,28 +2,12 @@ First Meet-Up, what we discussed, in no particular order
 
 Mantra: Know types, know haskell, no types, no haskell
 
-Simple Concurrency
-The main thread of execution (OS Thread) says "running" every three seconds
-The forked thread of execution receives command line input and immediately writes it to the console (stdout)
-
 > import           Control.Concurrent
 > import           Control.Monad
 > import           Text.Read
 
-> secs :: Int -> Int
-> secs = (*1000000)
-
-> concurrentProgramming :: IO ()
-> concurrentProgramming = do
->  forkIO $ forever $ do
->         line <- getLine
->         putStrLn line
->  forever $ do
->         threadDelay (secs 2)
->         putStrLn "running..."
-
 Algebraic Data Types 
-newtypes provide type safety with a runtime benefit, limited in that only one type can be used
+newtypes provide type safety with a runtime benefit, limited in that only one type can be used in a defintion
 data types allow for multiple data constructors to be defined
 
 > newtype StripeKey String = StripeKey "my key"
@@ -127,6 +111,45 @@ Example
 >    case readMaybe line :: Maybe Int of
 >      Nothing  -> putStrLn "nothing"
 >      Just num -> print num
+
+Simple Concurrency
+The main thread of execution (OS Thread) says "running" every three seconds
+The forked thread of execution receives command line input and immediately writes it to the console (stdout)
+
+> secs :: Int -> Int
+> secs = (*1000000)
+
+> concurrentProgramming :: IO ()
+> concurrentProgramming = do
+>  forkIO $ forever $ do
+>         line <- getLine
+>         putStrLn line
+>  forever $ do
+>         threadDelay (secs 2)
+>         putStrLn "running..."
+
+case statements
+> isFun :: String -> Bool
+> isFun thing = case thing of
+>                 "sports" -> True
+>                 "eating" -> True
+>                  _       -> False
+
+-- Function pattern matching
+> isFun :: String -> Bool
+> isFun "sports"   = True
+> isFun "eating"   = True
+> isFun _          = False
+
+let - in statements
+> addTwo = let a = 1
+>              b = 1
+>              c = a + b
+>          in (+c)
+
+where statements
+> addFour = (+four)
+>   where four = 4
 
 Homework:
 
