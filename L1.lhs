@@ -1,5 +1,4 @@
-First Meet-Up, what we discussed, in no particular order
-
+First Meet-Up, what we discussed
 Mantra: Know types, know haskell, no types, no haskell
 
 > import           Control.Concurrent
@@ -16,7 +15,9 @@ Example usage:
 Note: The above is safer than using plain strings since the compiler will enforce the type
 > data MyNums = One | Two | Three 
 
-What is a typeclass? A way to provide function overloading for Algebraic Data Types. If two data types implement (make an instance of) the same class, you can use the same function across both. A typeclass is conceptually similar to a Java interface. Classes can inherit from one another.
+What is a typeclass? A way to provide function overloading for Algebraic Data Types. 
+If two data types implement (make an instance of) the same class, you can use the same function across both. 
+A typeclass is conceptually similar to a Java interface. Classes can inherit from one another.
 
 > class ToString a :: * where
 >    to_str :: a -> String
@@ -24,7 +25,8 @@ What is a typeclass? A way to provide function overloading for Algebraic Data Ty
 Types have kinds. Kinds can be thought of as the type of types. 
 What are kinds? Read Brent Yorgey's section on them here, "A brief digression on kinds":
 http://www.cis.upenn.edu/~cis194/lectures/09-functors.html
-Kinds will become important for us when we discuss monad transformers (a pre-req to programming with the Snap monad... or any web framework monad really).
+Kinds will become important for us when we discuss monad transformers 
+(a pre-req to programming with the Snap monad... or any web framework monad really).
 
 This means we can constrain our functions to only types that implement a certain typeclass. 
 Example: 
@@ -90,7 +92,6 @@ Laziness allows for the creation of infinite lists.
 
 > example2 :: IO ()
 > example2 = print $ take 5 [1..]
-
 
 IO () 
 Getting command line input from the user, and printing it to screen, first interaction with a monad
