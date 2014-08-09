@@ -10,7 +10,10 @@ Algebraic Data Types
 newtypes provide type safety with a runtime benefit, limited in that only one type can be used in a defintion
 data types allow for multiple data constructors to be defined
 
-> newtype StripeKey String = StripeKey "my key"
+> newtype StripeKey = StripeKey String
+Example usage:
+> stripeKey = StripeKey "secretKey"
+Note: The above is safer than using plain strings since the compiler will enforce the type
 > data MyNums = One | Two | Three 
 
 What is a typeclass? A way to provide function overloading for Algebraic Data Types. If two data types implement (make an instance of) the same class, you can use the same function across both. A typeclass is conceptually similar to a Java interface. Classes can inherit from one another.
@@ -21,7 +24,7 @@ What is a typeclass? A way to provide function overloading for Algebraic Data Ty
 Types have kinds. Kinds can be thought of as the type of types. 
 What are kinds? Read Brent Yorgey's section on them here, "A brief digression on kinds":
 http://www.cis.upenn.edu/~cis194/lectures/09-functors.html
-Kinds will become important for us when we discuss monad transformers (a pre-req to programming with the Snap monad... or any web framework monad for that matter).
+Kinds will become important for us when we discuss monad transformers (a pre-req to programming with the Snap monad... or any web framework monad really).
 
 This means we can constrain our functions to only types that implement a certain typeclass. 
 Example: 
