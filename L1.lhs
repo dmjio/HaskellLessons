@@ -1,13 +1,10 @@
-First Meet-Up
+First Meet-Up, what we discussed, in no particular order
 
-Know types, know haskell, no types, no haskell
+Mantra: Know types, know haskell, no types, no haskell
 
--- Taste of concurrency
-
--- The main thread of execution (OS Thread) says "running" every three
--- seconds
-
--- The forked thread of execution receives command line input and immediately writes it to the console (stdout)
+Simple Concurrency
+The main thread of execution (OS Thread) says "running" every three seconds
+The forked thread of execution receives command line input and immediately writes it to the console (stdout)
 
 > import           Control.Concurrent
 > import           Control.Monad
@@ -25,41 +22,28 @@ Know types, know haskell, no types, no haskell
 >         threadDelay (secs 2)
 >         putStrLn "running..."
 
--- NewType vs. Data
--- Newtype gives you type safety without boxing at runtime, the only limitation is that only one constructor is allowed
--- Data boxes at runtime, allows you to define multiple constructors
+Algebraic Data Types 
+newtypes provide type safety with a runtime benefit, limited in that only one type can be used
+data types allow for multiple data constructors to be defined
 
-newtype StripeKey String = StripeKey "my key"
-
--- Algebraic Data Types 
+> newtype StripeKey String = StripeKey "my key"
 > data MyNums = One | Two | Three 
 
--- We did not discuss this, but there are Sum Types vs. Product Types
--- Follow up reading: http://chris-taylor.github.io/blog/2013/02/10/the-algebra-of-algebraic-data-types/
--- video: https://www.youtube.com/watch?v=YScIPA8RbVE
-
--- What is :t One, Two, Three --> ?
--- What happens if you do :i MyNums --> ? 
-
--- Typeclass introduction... What is a typeclass?
--- What is ad hoc polymorphism
-
--- Typeclasses
-
-What is a typeclass? 
+What is a typeclass? A way to provide function overloading for Algebraic Data Types. If two data types implement (make an instance of) the same class, you can use the same function across both. A typeclass is conceptually similar to a Java interface. Classes can inherit from one another.
 
 > class ToString a :: * where
 >    to_str :: a -> String
 
-A typeclass is conceptually similar to a Java interface. Any typeclass that is defined can be instanced by a Type if the kinds align. Classes can inherit from one another.
+Types have kinds. Kinds can be thought of as the type of types. 
+What are kinds? Read Brent Yorgey's section on them here, "A brief digression on kinds":
+http://www.cis.upenn.edu/~cis194/lectures/09-functors.html
+Kinds will become important for us when we discuss monad transformers (a pre-req to programming with the Snap monad... or any web framework monad for that matter).
 
-Example:
+This means we can constrain our functions to only types that implement a certain typeclass. 
+Example: 
 
--- class Eq a => Ord a where
-
-What is a kind? A kind is the type of a type (These will be important when we get to monad transformers)
-
--- Types have kinds
+> sayHey :: ToString a => a -> String
+> sayHey x = to_str x ++ "hey"
 
 > instance ToString MyNums where
 >    to_str One = "one"
@@ -72,7 +56,7 @@ What is a kind? A kind is the type of a type (These will be important when we ge
 >    Three == Three = True
 >    _ == _ = False
 
--- Define (<=) instances
+-- Still need to define (<=) instances
 > instance Ord MyNums where
 >    One < Two   = True
 >    One < Three = True
@@ -109,8 +93,20 @@ What is a kind? A kind is the type of a type (These will be important when we ge
 >     | p x       = x : filter p xs
 >     | otherwise = filter p xs
 
+Laziness
+Expressions are only evaluated if they are absolutely needed, otherwise they are ignored.
+By default haskell expressions are evaluated from othe outside in.
+Laziness allows for the creation of infinite lists.
+
+> example1 :: IO ()
+> example1 = print $ [1,2,3,undefined] !! 2
+
+> example2 :: IO ()
+> example2 = print $ take 5 [1..]
+
+
 IO () 
-Getting command line input from the user, and printing it to screen
+Getting command line input from the user, and printing it to screen, first interaction with a monad
 -- :t getLine  :: IO String
 -- :t putStrLn :: String -> IO ()
 > main :: IO ()
@@ -118,18 +114,25 @@ Getting command line input from the user, and printing it to screen
 >     line <- getLine
 >     putStrLn line
 
--- Identity Type
+Identity Type, simplest data type, similar to a box
 > data Identity a = Identity a
 
--- Maybe type, used for computations that may fail
+Maybe type, used for computations that may fail
 > data Maybe a = Just a | Nothing
 
--- Example
+Example
 > maybeExample :: IO ()
 > maybeExample = do
 >    line <- getLine
 >    case readMaybe line :: Maybe Int of
 >      Nothing  -> putStrLn "nothing"
 >      Just num -> print num
+
+Homework:
+
+Read sections 1, 2 and 3 from the Typeclassopedia (up to functors) and do exercises.
+http://www.haskell.org/haskellwiki/Typeclassopedia
+Supplement this learning with 'Learn You a Haskell' section on Functors
+
 
 
